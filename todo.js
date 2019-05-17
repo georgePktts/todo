@@ -133,6 +133,9 @@ let Tasks = (function () {
         }
     }
 
+    /**
+     * FUnction used to print the reaming/completed tasks counters and the ToDo/Done lists.
+     */
     function _printTasks() {
         document.getElementById("remaining_tasks").innerHTML = "Remaining tasks: " + _countTasks("todo");
         document.getElementById("completed_tasks").innerHTML = "Completed tasks: " + _countTasks("done");
@@ -145,10 +148,7 @@ let Tasks = (function () {
 
 
 
-
-
-
-
+    
     function initialize() {
         // Add listener to "description" input in order to add task by pressing the "Enter" keyboard key.
         // *** This was found on the internet. ***
@@ -160,9 +160,6 @@ let Tasks = (function () {
         });
         _hideShowListContents();
     }
-
-    
-
 
     /**
      * Add task to "taskList" array.
@@ -189,7 +186,7 @@ let Tasks = (function () {
     }
 
     /**
-     * Move 
+     * Move tasks from ToDo to Done
      */
     function completeAllTasks() {
         for (let i = 0; i < taskList.length; i++)
@@ -209,13 +206,15 @@ let Tasks = (function () {
         _executeFunctions();
     }
 
+    /**
+     * Move tasks from Done to Deleted
+     */
     function deleteAllTasks() {
         for (let i = 0; i < taskList.length; i++)
             if (taskList[i].status === "done") taskList[i].status = "deleted";
         _executeFunctions();
     }
 
-    
 
     // Public functions
     return {
