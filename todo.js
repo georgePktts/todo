@@ -1,17 +1,6 @@
-/**
- * Class that represents a task.
- */
-class Task {
-    constructor(id, description) {
-        this.id = id;
-        this.status = "todo";
-        this.description = description;
-    }
-}
-
 let Tasks = (function () {
     // Array used to store "Task" type object.
-    let taskList = [];
+    let _taskList = [];
 
     /**
      * Check if provided attribute is null or undifined.
@@ -30,7 +19,7 @@ let Tasks = (function () {
      * @return {array} Subarray that contain only the tasks of the provided status.
      */
     function _getTasks(status) {
-        return taskList.filter(function(item) { return item.status === status });
+        return _taskList.filter(function(item) { return item.status === status });
     }
 
     /**
@@ -50,7 +39,7 @@ let Tasks = (function () {
      * @return {number} Returns the possition of the object that was found using provided id.
      */
     function _getTaskPossition(id) {
-        return taskList.findIndex(function(item) { return item.id === id });
+        return _taskList.findIndex(function(item) { return item.id === id });
     }
 
     /**
@@ -60,7 +49,7 @@ let Tasks = (function () {
      * @param {*} status The new value of status.
      */
     function _changeTaskStatus(id, status) {
-        taskList[_getTaskPossition(id)].status = status;
+        _taskList[_getTaskPossition(id)].status = status;
     }
 
     /**
@@ -89,7 +78,7 @@ let Tasks = (function () {
      * This function is called after each action.
      * e.g. after adding a task, completing a task in order to refresh the UI.
      */
-    function _executeFunctions() {
+    function _updateUI() {
         _hideShowListContents();
         _printTasks();
     }
@@ -148,7 +137,7 @@ let Tasks = (function () {
 
 
 
-    
+
     function initialize() {
         // Add listener to "description" input in order to add task by pressing the "Enter" keyboard key.
         // *** This was found on the internet. ***
@@ -167,10 +156,10 @@ let Tasks = (function () {
     function addTask() {
         const description = document.getElementById("form_task_description").value.trim();
         if (_checkValid(description)) {
-            taskList.push(new Task("task_" + taskList.length, description));
+            _taskList.push({id: "task_" + _taskList.length, status: "todo", description: description});
             document.getElementById("form_task_description").value = "";
         }
-        _executeFunctions();
+        _updateUI();
     }
 
     /**
@@ -182,16 +171,16 @@ let Tasks = (function () {
      */
     function completeTask(id) {
         _changeTaskStatus(id, "done");
-        _executeFunctions();
+        _updateUI();
     }
 
     /**
      * Move tasks from ToDo to Done
      */
     function completeAllTasks() {
-        for (let i = 0; i < taskList.length; i++)
-            if (taskList[i].status === "todo") taskList[i].status = "done";
-        _executeFunctions();
+        for (let i = 0; i < _taskList.length; i++)
+            if (_taskList[i].status === "todo") _taskList[i].status = "done";
+        _updateUI();
     }
 
     /**
@@ -203,16 +192,16 @@ let Tasks = (function () {
      */
     function deleteTask(id) {
         _changeTaskStatus(id, "deleted");
-        _executeFunctions();
+        _updateUI();
     }
 
     /**
      * Move tasks from Done to Deleted
      */
     function deleteAllTasks() {
-        for (let i = 0; i < taskList.length; i++)
-            if (taskList[i].status === "done") taskList[i].status = "deleted";
-        _executeFunctions();
+        for (let i = 0; i < _taskList.length; i++)
+            if (_taskList[i].status === "done") _taskList[i].status = "deleted";
+        _updateUI();
     }
 
 
